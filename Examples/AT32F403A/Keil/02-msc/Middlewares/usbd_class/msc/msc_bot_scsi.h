@@ -46,7 +46,7 @@ extern "C" {
   * @{
   */
 
-#define MSC_SUPPORT_MAX_LUN              2
+#define MSC_SUPPORT_MAX_LUN              1
 #define MSC_MAX_DATA_BUF_LEN             4096
 
 #define MSC_CMD_FORMAT_UNIT              0x04

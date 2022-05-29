@@ -37,7 +37,7 @@
 uint32_t sector_size = 2048;
 uint32_t msc_flash_size;
 
-// If you have spi flash, change MSC_SUPPORT_MAX_LUN to =2
+// If you have spi flash, change MSC_SUPPORT_MAX_LUN to =2, Add spim_init();
 uint8_t scsi_inquiry[MSC_SUPPORT_MAX_LUN][SCSI_INQUIRY_DATA_LENGTH] =
 {
   /* lun = 0 */

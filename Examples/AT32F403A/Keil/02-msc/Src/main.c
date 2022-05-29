@@ -39,7 +39,7 @@ int main(void)
   led_init();
 
   /* For SPI FLASH */
-  spim_init();
+  // spim_init();
 
   /* select usb 48m clcok source */
   usb_clock48m_select(USB_CLK_HICK);
