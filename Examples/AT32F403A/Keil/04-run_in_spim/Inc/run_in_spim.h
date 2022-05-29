@@ -2,12 +2,13 @@
 #define __RUN_IN_SPIM_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "at32f403a_407.h"
 
-void run_in_spim_test(void);
+    void run_in_spim_test(void);
 
 #ifdef __cplusplus
 }

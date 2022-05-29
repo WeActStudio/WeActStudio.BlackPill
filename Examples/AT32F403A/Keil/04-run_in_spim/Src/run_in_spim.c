@@ -4,9 +4,9 @@
 
 void run_in_spim_test(void)
 {
-    while(1)
-    {    
-       led_toggle();
-       delay_ms(100);
+    while (1)
+    {
+        led_toggle();
+        delay_ms(100);
     }
 }

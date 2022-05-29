@@ -1,38 +1,38 @@
 /**
-  **************************************************************************
-  * @file     rtc.c
-  * @version  v2.0.9
-  * @date     2022-04-25
-  * @brief    this file provides template for calendar api.
-  **************************************************************************
-  *                       Copyright notice & Disclaimer
-  *
-  * The software Board Support Package (BSP) that is made available to
-  * download from Artery official website is the copyrighted work of Artery.
-  * Artery authorizes customers to use, copy, and distribute the BSP
-  * software and its related documentation for the purpose of design and
-  * development in conjunction with Artery microcontrollers. Use of the
-  * software is governed by this copyright notice and the following disclaimer.
-  *
-  * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
-  * GUARANTEES OR REPRESENTATIONS OF ANY KIND. ARTERY EXPRESSLY DISCLAIMS,
-  * TO THE FULLEST EXTENT PERMITTED BY LAW, ALL EXPRESS, IMPLIED OR
-  * STATUTORY OR OTHER WARRANTIES, GUARANTEES OR REPRESENTATIONS,
-  * INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
-  * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
-  *
-  **************************************************************************
-  */
+ **************************************************************************
+ * @file     rtc.c
+ * @version  v2.0.9
+ * @date     2022-04-25
+ * @brief    this file provides template for calendar api.
+ **************************************************************************
+ *                       Copyright notice & Disclaimer
+ *
+ * The software Board Support Package (BSP) that is made available to
+ * download from Artery official website is the copyrighted work of Artery.
+ * Artery authorizes customers to use, copy, and distribute the BSP
+ * software and its related documentation for the purpose of design and
+ * development in conjunction with Artery microcontrollers. Use of the
+ * software is governed by this copyright notice and the following disclaimer.
+ *
+ * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
+ * GUARANTEES OR REPRESENTATIONS OF ANY KIND. ARTERY EXPRESSLY DISCLAIMS,
+ * TO THE FULLEST EXTENT PERMITTED BY LAW, ALL EXPRESS, IMPLIED OR
+ * STATUTORY OR OTHER WARRANTIES, GUARANTEES OR REPRESENTATIONS,
+ * INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+ *
+ **************************************************************************
+ */
 
 #include "rtc.h"
 
 /** @addtogroup AT32F403A_periph_examples
-  * @{
-  */
+ * @{
+ */
 
 /** @addtogroup 403A_RTC_calendar
-  * @{
-  */
+ * @{
+ */
 
 calendar_type calendar;
 
@@ -58,7 +58,7 @@ uint8_t rtc_init(calendar_type *calendar)
   pwc_battery_powered_domain_access(TRUE);
 
   /* check if rtc is initialized */
-  if(bpr_data_read(BPR_DATA1) != 0x1234)
+  if (bpr_data_read(BPR_DATA1) != 0x1234)
   {
     /* reset battery-powered domain register */
     bpr_reset();
@@ -66,7 +66,8 @@ uint8_t rtc_init(calendar_type *calendar)
     /* enable the lext osc */
     crm_clock_source_enable(CRM_CLOCK_SOURCE_LEXT, TRUE);
     /* wait lext is ready */
-    while(crm_flag_get(CRM_LEXT_STABLE_FLAG) == RESET);
+    while (crm_flag_get(CRM_LEXT_STABLE_FLAG) == RESET)
+      ;
     /* select the rtc clock source */
     crm_rtc_clock_select(CRM_RTC_CLOCK_LEXT);
 
@@ -116,11 +117,11 @@ uint8_t rtc_init(calendar_type *calendar)
   */
 uint8_t is_leap_year(uint16_t year)
 {
-  if(year % 4 == 0)
+  if (year % 4 == 0)
   {
-    if(year % 100 == 0)
+    if (year % 100 == 0)
     {
-      if(year % 400 == 0)
+      if (year % 400 == 0)
       {
         return 1;
       }
@@ -141,26 +142,26 @@ uint8_t is_leap_year(uint16_t year)
 }
 
 /**
-  * @brief  set time. convert the input clock to a second.
-  *         the time basic : 1970.1.1
-  *         legitimate year: 1970 ~ 2099
-  * @param  calendar
-  * @retval 0: set time right.
-  *         1: set time failed.
-  */
+ * @brief  set time. convert the input clock to a second.
+ *         the time basic : 1970.1.1
+ *         legitimate year: 1970 ~ 2099
+ * @param  calendar
+ * @retval 0: set time right.
+ *         1: set time failed.
+ */
 uint8_t rtc_time_set(calendar_type *calendar)
 {
   uint32_t t;
   uint32_t seccount = 0;
 
-  if(calendar->year < 1970 || calendar->year > 2099)
+  if (calendar->year < 1970 || calendar->year > 2099)
   {
     return 1;
   }
 
-  for(t = 1970; t < calendar->year; t++)
+  for (t = 1970; t < calendar->year; t++)
   {
-    if(is_leap_year(t))
+    if (is_leap_year(t))
     {
       seccount += 31622400;
     }
@@ -172,11 +173,11 @@ uint8_t rtc_time_set(calendar_type *calendar)
 
   calendar->month -= 1;
 
-  for(t = 0; t < calendar->month; t++)
+  for (t = 0; t < calendar->month; t++)
   {
     seccount += (uint8_t)mon_table[t] * 86400;
 
-    if(is_leap_year(calendar->year) && t == 1)
+    if (is_leap_year(calendar->year) && t == 1)
     {
       seccount += 86400;
     }
@@ -207,26 +208,26 @@ uint8_t rtc_time_set(calendar_type *calendar)
 }
 
 /**
-  * @brief  set rtc alarm clock.
-  *         the time basic : 1970.1.1
-  *         legitimate year: 1970 ~ 2099
-  * @param  calendar
-  * @retval 0: set alarm right.
-  *         1: set alarm failed.
-  */
+ * @brief  set rtc alarm clock.
+ *         the time basic : 1970.1.1
+ *         legitimate year: 1970 ~ 2099
+ * @param  calendar
+ * @retval 0: set alarm right.
+ *         1: set alarm failed.
+ */
 uint8_t rtc_alarm_clock_set(calendar_type *calendar)
 {
   uint16_t t;
   uint32_t seccount = 0;
 
-  if(calendar->year < 1970 || calendar->year > 2099)
+  if (calendar->year < 1970 || calendar->year > 2099)
   {
     return 1;
   }
 
-  for(t = 1970; t < calendar->year; t++)
+  for (t = 1970; t < calendar->year; t++)
   {
-    if(is_leap_year(t))
+    if (is_leap_year(t))
     {
       seccount += 31622400;
     }
@@ -238,11 +239,11 @@ uint8_t rtc_alarm_clock_set(calendar_type *calendar)
 
   calendar->month -= 1;
 
-  for(t = 0; t < calendar->month; t++)
+  for (t = 0; t < calendar->month; t++)
   {
     seccount += (uint8_t)mon_table[t] * 86400;
 
-    if(is_leap_year(calendar->year) && t == 1)
+    if (is_leap_year(calendar->year) && t == 1)
     {
       seccount += 86400;
     }
@@ -270,12 +271,12 @@ uint8_t rtc_alarm_clock_set(calendar_type *calendar)
 }
 
 /**
-  * @brief  get current week by input leap year\mouth\day.
-  * @param  year : year
-  * @param  mon  : month
-  * @param  day  : day
-  * @retval week number.
-  */
+ * @brief  get current week by input leap year\mouth\day.
+ * @param  year : year
+ * @param  mon  : month
+ * @param  day  : day
+ * @retval week number.
+ */
 uint8_t rtc_week_get(uint16_t year, uint8_t month, uint8_t day)
 {
   uint16_t temp2;
@@ -284,7 +285,7 @@ uint8_t rtc_week_get(uint16_t year, uint8_t month, uint8_t day)
   yearh = year / 100;
   yearl = year % 100;
 
-  if(yearh > 19)
+  if (yearh > 19)
   {
     yearl += 100;
   }
@@ -293,19 +294,19 @@ uint8_t rtc_week_get(uint16_t year, uint8_t month, uint8_t day)
   temp2 = temp2 % 7;
   temp2 = temp2 + day + table_week[month - 1];
 
-  if(yearl % 4 == 0 && month < 3)
+  if (yearl % 4 == 0 && month < 3)
   {
     temp2--;
   }
 
-  return(temp2 % 7);
+  return (temp2 % 7);
 }
 
 /**
-  * @brief  get current time.
-  * @param  none.
-  * @retval none.
-  */
+ * @brief  get current time.
+ * @param  none.
+ * @retval none.
+ */
 void rtc_time_get(void)
 {
   static uint16_t daycnt = 0;
@@ -316,16 +317,16 @@ void rtc_time_get(void)
   timecount = rtc_counter_get();
   temp = timecount / 86400;
 
-  if(daycnt != temp)
+  if (daycnt != temp)
   {
     daycnt = temp;
     temp1 = 1970;
 
-    while(temp >= 365)
+    while (temp >= 365)
     {
-      if(is_leap_year(temp1))
+      if (is_leap_year(temp1))
       {
-        if(temp >= 366)
+        if (temp >= 366)
         {
           temp -= 366;
         }
@@ -346,11 +347,11 @@ void rtc_time_get(void)
     calendar.year = temp1;
     temp1 = 0;
 
-    while(temp >= 28)
+    while (temp >= 28)
     {
-      if(is_leap_year(calendar.year) && temp1 == 1)
+      if (is_leap_year(calendar.year) && temp1 == 1)
       {
-        if(temp >= 29)
+        if (temp >= 29)
         {
           temp -= 29;
         }
@@ -361,7 +362,7 @@ void rtc_time_get(void)
       }
       else
       {
-        if(temp >= mon_table[temp1])
+        if (temp >= mon_table[temp1])
         {
           temp -= mon_table[temp1];
         }
@@ -386,9 +387,9 @@ void rtc_time_get(void)
 }
 
 /**
-  * @}
-  */
+ * @}
+ */
 
 /**
-  * @}
-  */
+ * @}
+ */

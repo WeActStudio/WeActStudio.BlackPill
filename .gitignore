@@ -20,10 +20,12 @@ UNSupport/
 obj/
 patches/
 .idea
+*.crf
+*.d
+*.lnp
 
 # artefacts of top-level Makefile
 /downloads/
-/tools/
 /build/
 # local changes only
 make/local.mk
@@ -44,11 +46,7 @@ stm32.mak
 
 # artefacts for CLion
 /cmake-build-debug/
-/CMakeLists.txt
 
 .vagrant
 ubuntu*.log
 /.vs
-
-# EEPROM image file (created by SITL)
-eeprom.bin
