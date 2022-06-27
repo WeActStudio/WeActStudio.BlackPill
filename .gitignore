@@ -4,7 +4,6 @@
 *~
 .~lock*
 *.uvopt
-*.uvoptx
 *.dep
 *.bak
 *.uvgui.*
