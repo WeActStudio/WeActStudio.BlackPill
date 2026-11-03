@@ -29,8 +29,8 @@ Timer x 14,SysTick x 1,RTC x 1,I2C x 3,SPI x 4,UART x 7,SDIO x 1,USBFS x 1,CAN x
 - WeAct Studio 官方链接
 - taobao: weactstudio.taobao.com
 - aliexpress: weactstudio.aliexpress.com
-- github: github.com/WeActTC
-- gitee: gitee.com/WeAct-TC
-- blog: www.weact-tc.cn
+- github: github.com/WeActStudio
+- gitee: gitee.com/WeActStudio
+- blog: blog.weactstudio.com
 ---------------------------------------*/
 ```
